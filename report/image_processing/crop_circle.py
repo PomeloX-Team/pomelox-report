@@ -2,12 +2,9 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 from lib import *
+import constant as CONST
 
 
-IMG_PATH = 'images/'
-IMG_SAVE_PATH = 'images_result/'
-RESULT_WIDTH = 300
-RESULT_HEIGHT = 300
 debug = False
 
 
@@ -35,7 +32,7 @@ def histogram_plot_test(img):
 
 
 def crop_cir(img):
-    global RESULT_WIDTH, RESULT_HEIGHT,debug
+    global debug
     # imread return bgr color space
     radius = 0
     offset_radius = -5
@@ -140,12 +137,14 @@ def crop_cir(img):
         x, y = center
         width = radius + 2
         result = result[y - width:y + width, x - width:x + width]
-        result = cv2.resize(result, (RESULT_WIDTH, RESULT_HEIGHT))
+        try:
+            result = cv2.resize(result, (CONST.RESULT_WIDTH, CONST.RESULT_HEIGHT))
+        except:
+            result = None
         return result
 
 
 def main():
-    global IMG_PATH, IMG,SAVE_PATH
     symbol = ['A', 'B', 'C', 'D', 'E', 'F']
     error_list = []
     for prefix in symbol:
@@ -154,16 +153,16 @@ def main():
                 img_name = prefix + str(i) + '_2017110' + str(j) + '.JPG'
                 img_name_save = prefix + str(i) + '_2017110' + str(j) + '.JPG'
                 print(img_name)
-                img = cv2.imread(IMG_PATH+img_name, 1)
+                img = cv2.imread(CONST.IMG_PATH+img_name, 1)
                 res = crop_cir(img)
 
                 if res is None:
                     error_list.append(img_name)
                     continue
                 
-                if cv2.imread(IMG_SAVE_PATH+img_name, 1) is None:
-                    cv2.imwrite(''+IMG_SAVE_PATH + prefix + str(i) + str(j) + '.jpg', res)
-
+                if cv2.imread(CONST.IMG_SAVE_PATH+img_name, 1) is None:
+                    cv2.imwrite(CONST.IMG_SAVE_PATH+img_name, res)
+    print(error_list)
 
 if __name__ == '__main__':
     main()

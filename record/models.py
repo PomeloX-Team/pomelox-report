@@ -47,9 +47,9 @@ class GeneralData(models.Model):
     temp = models.FloatField(default=None)
     weight = models.FloatField(default=None)
     circum = models.FloatField(default=None)
-    date = models.DateField(auto_now=False, auto_now_add=False)
+    date = models.CharField(default=None,max_length=12)
     def __str__(self):
-        return self.pomelo_index
+        return self.pomelo_index.symbol+'_'+self.date
 
 class Information(models.Model):
     id = models.UUIDField(
@@ -57,6 +57,11 @@ class Information(models.Model):
         default=uuid.uuid4,
         editable=False,
         unique=True
+    )
+    general_data = models.ForeignKey(
+        GeneralData,
+        on_delete=models.CASCADE,
+        default=None
     )
     pomelo_sub_index = models.ForeignKey(
         PomeloSubIndex,
@@ -68,7 +73,7 @@ class Information(models.Model):
     b = models.FloatField(default=0)
     # gar = gland area ratio
     gar = models.FloatField(default=0)
-    picture_name = models.CharField(max_length=64,default=None)
+    picture_name = models.CharField(max_length=64,default='')
     
     def __str__(self):
-        return self.pomelo_sub_index
+        return self.pomelo_sub_index.sub_symbol+'_'+self.general_data.date

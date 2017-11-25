@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'record',
     'report',
+    'bootstrapform',
 ]
 
 MIDDLEWARE = [

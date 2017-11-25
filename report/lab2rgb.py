@@ -31,18 +31,19 @@ def get_rgb(L, a, b):
     img_a.fill(a)
     img_b.fill(b)
     Lab = cv2.merge((img_L, img_a, img_b))
-    RGB = cv2.cvtColor(Lab, cv2.COLOR_Lab2BGR)
+    BGR = cv2.cvtColor(Lab, cv2.COLOR_Lab2BGR)
     if debug:
         cv2.imshow('Lab', Lab)
         cv2.imshow('RGB', RGB)
         cv2.waitKey(0)
     else:
-        return RGB
+        B,G,R = cv2.split(BGR)
+        return [R,G,B]
 
 def read_data():
     rgb_list = []
     img = None
-    with open('A1.csv', newline='') as csvfile:
+    with open('./A1.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             l = row['L2']

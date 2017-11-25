@@ -14,7 +14,7 @@ def add_sub_index(request):
             if PomeloSubIndex.objects.filter(sub_symbol=sub_symbol):
                 continue
             form = PomeloSubIndex()
-            form.sub_symbol = symbol
+            form.sub_symbol = sub_symbol
             form.pomelo_index = PomeloIndex.objects.get(symbol=a)
             form.save()
     return HttpResponse('Complete')
@@ -45,10 +45,12 @@ def add_color_data(request):
             sub_symbol = a + str(no)
             pomelo_sub_index = PomeloSubIndex.objects.get(sub_symbol=sub_symbol)
             pomelo_index = PomeloIndex.objects.get(symbol=a)
+            print(sub_symbol)
             for (d, i) in zip(data[sub_symbol], range(1, 25)):
                 date = str(i) + '/11/2560'
                 general_data = GeneralData.objects.get(date=date,pomelo_index=pomelo_index)
-                if not Information.objects.filter(general_data=general_data, pomelo_sub_index=pomelo_sub_index):
+                print(general_data)
+                if Information.objects.filter(general_data=general_data, pomelo_sub_index=pomelo_sub_index):
                     continue
                 form = Information()
                 form.general_data = general_data
@@ -56,5 +58,7 @@ def add_color_data(request):
                 form.l = d[0]
                 form.a = d[1]
                 form.b = d[2]
+                print(d[0])
+                
                 form.save()
     return HttpResponse('Complete')

@@ -1,0 +1,31 @@
+{% extends 'report_base.html' %}
+{% load bootstrap %}
+{% block content %}
+<div class = "container">
+  <div class = "row">
+       <div class="col-xs-1 col-sm-3 col-md-4"></div>
+       <div class="col-xs-10 col-sm-6 col-md-4">
+          <h1>Color</h1></br>
+     
+          <form method="post">
+                     <button type="submit" class="btn btn-primary">Display</button> 
+         
+          <br/>
+
+        </form>
+          {% if color_data %}
+            <table class='table'>  
+          {% for color in color_data.A1 %}
+              <tr bgcolor="rgb({{ color.0 }},{{ color.1 }},{{ color.2 }})">
+               <td></td>
+              </tr>
+            {% endfor %}
+          {% endif %}
+        </table>
+        <br/>
+        
+      </div>
+      <div class="col-xs-1 col-sm-3 col-md-4"></div>
+  </div>
+</div>
+{% endblock %}

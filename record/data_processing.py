@@ -17,7 +17,7 @@ class DataProcessing():
         res = {}
         for (a, no) in zip(self.index, self.grade):
             url = self.main_url + a + '_NO_' + no
-            res = urllib.request.urlretrieve(self.main_url, "log.csv")
+            res = urllib.request.urlretrieve(url, "log.csv")
             csvf = open('./log.csv', newline='')
             reader = csv.reader(csvf)
             self.general_data[a] = []

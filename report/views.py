@@ -13,8 +13,8 @@ def Lab_device2cv(L, a, b):
 
 
 def get_rgb(L, a, b):
-    w = 5
-    h = 5
+    w = 50
+    h = 50
     img_L = np.uint8(np.zeros((h, w)))
     img_a = np.uint8(np.zeros((h, w)))
     img_b = np.uint8(np.zeros((h, w)))
@@ -29,12 +29,18 @@ def get_rgb(L, a, b):
 
 def get_color(request):
     color_data = {}
-    for s in SYMBOL:
-        for no in range(1, 2):
-            sub_symbol = s + str(no)
+    color_last = {}
+    if request.method == 'POST':
+        symbol = request.POST['symbol']
+        color_data_list = []
+        color_last_list = []
+        for no in range(1, 6):
+            sub_symbol = symbol + str(no)
+            print(sub_symbol)
             pomelo_sub_index = PomeloSubIndex.objects.get(sub_symbol=sub_symbol)
-            pomelo_index = PomeloIndex.objects.get(symbol=s)
-            color_data[sub_symbol] = []
+            pomelo_index = PomeloIndex.objects.get(symbol=symbol)
+            color_data = []
+            color_last = []
             for i in range(1, 25):
                 date = str(i) + '/11/2560'
                 general_data = GeneralData.objects.get(date=date,pomelo_index=pomelo_index)
@@ -42,8 +48,22 @@ def get_color(request):
                 l = information.l
                 a = information.a
                 b = information.b
-                print(date,l,a,b)
+                # print(date)
+                # print(l,a,b)
                 r,g,b = get_rgb(l,a,b)
-                color_data[sub_symbol].append([r,g,b])
+                # print(r,g,b)                
+                r = str(r)
+                g = str(g)
+                b = str(b)
+                # print(b,g,r)
+                color = 'rgb('+r+','+g+','+b+')'
+                color_data.append(color)
+                if i == 24:
+                    color_last.append(color)
             # print(color_data)
-    return render(request,'color.html',{'color_data':color_data})
+            color_data_list.append(color_data)
+            color_last_list.append(color_last)
+        return render(request,'color.html',{'color_data_list':color_data_list,'color_last_list':color_last_list,'symbol':symbol})
+    else:
+        return render(request,'color.html',context=None)
+        

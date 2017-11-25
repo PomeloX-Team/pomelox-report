@@ -1,31 +1,69 @@
-{% extends 'report_base.html' %}
-{% load bootstrap %}
-{% block content %}
-<div class = "container">
-  <div class = "row">
-       <div class="col-xs-1 col-sm-3 col-md-4"></div>
-       <div class="col-xs-10 col-sm-6 col-md-4">
-          <h1>Color</h1></br>
-     
+{% extends 'report_base.html' %} {% load bootstrap %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-1 col-sm-1 col-md-1"></div>
+    <div class="col-xs-10 col-sm-10 col-md-10">
+      </br>
+      <h1>Color {% if symbol %}of {{ symbol }}{% endif %}</h1>
+      <table class='table'>
+        <tr>
           <form method="post">
-                     <button type="submit" class="btn btn-primary">Display</button> 
-         
-          <br/>
+            {% csrf_token %}
 
-        </form>
-          {% if color_data %}
-            <table class='table'>  
-          {% for color in color_data.A1 %}
-              <tr bgcolor="rgb({{ color.0 }},{{ color.1 }},{{ color.2 }})">
-               <td></td>
-              </tr>
-            {% endfor %}
-          {% endif %}
-        </table>
-        <br/>
-        
-      </div>
-      <div class="col-xs-1 col-sm-3 col-md-4"></div>
+            <td colspan="2">
+              <select id='symbol' name='symbol' class='form-control'>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+              </select>
+
+            </td>
+            <td>
+              <button type="submit" class="btn btn-primary">Display</button>
+
+
+            </td>
+          </form>
+        </tr>
+        <tr>
+          <td width='33%'>
+            <br/>
+          </td>
+          <td width='33%'>
+            <br/>
+          </td>
+          <td width='33%'>
+            <br/>
+          </td>
+
+        </tr>
+      </table>
+
+      <br/>
+
+    </div>
+    <div class="col-xs-1 col-sm-1 col-md-1"></div>
+  </div>
+  <div class="row">
+    {% if color_data_list %} 
+    {% for color_data in color_data_list %} 
+    <div class="col-xs-2 col-sm-2 col-md-2">
+    {% for color in color_data %}
+      <table class='table'>
+        <tr>
+          <td style="background-color:{{ color_data.0 }};"></td>
+          <td style="background-color:{{ color }};"></td>
+          <!-- <td style="background-color:{{ color_last.A1.0 }};">Last: {{color_last.0 }}</td> -->
+        </tr>
+      </table>
+      {% endfor %} 
+    </div>
+    {% endfor %} 
+    {% endif %}
   </div>
 </div>
+
 {% endblock %}

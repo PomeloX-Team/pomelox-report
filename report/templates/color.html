@@ -1,17 +1,18 @@
 {% extends 'report_base.html' %} {% load bootstrap %} {% block content %}
 <script>
+  var count = 1;
   window.onload = function () {
+    {% if color_diff_list %}
+    {% for color_diff in color_diff_list %}
 
     //Better to construct options first and then pass it as a parameter
     var options = {
       exportEnabled: true,
       animationEnabled: true,
       title: {
-        text: "Color Difference Chart"
+        text: "Color Difference Chart"+count.toString()
       },
-    {% if color_diff_list %}
     data: [
-    {% for color_diff in color_diff_list %}
         {
           type: "line", //change it to line, area, bar, pie, etc
           dataPoints: [
@@ -20,11 +21,12 @@
             {% endfor %}
           ],
     },
-    {% endfor %}
     ]
-  {% endif %}
   };
-  $("#chartContainer").CanvasJSChart(options);
+  $("#chartContainer".concat(count.toString())).CanvasJSChart(options);
+  count = count + 1
+  {% endfor %}
+  {% endif %}
   
 
     
@@ -100,7 +102,19 @@
              
   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
   <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
-  <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+  <div id="chartContainer1" style="height: 300px; width: 100%;"></div>
+  <br/>
+  <br/>
+  <div id="chartContainer2" style="height: 300px; width: 100%;"></div>
+  <br/>
+  <br/>
+  <div id="chartContainer3" style="height: 300px; width: 100%;"></div>
+  <br/>
+  <br/>
+  <div id="chartContainer4" style="height: 300px; width: 100%;"></div>
+  <br/>
+  <br/>
+  <div id="chartContainer5" style="height: 300px; width: 100%;"></div>
   <br/>
   <br/>
   <div id="chartContainerWeight" style="height: 300px; width: 100%;"></div>

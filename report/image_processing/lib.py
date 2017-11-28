@@ -2,10 +2,13 @@ import cv2
 import statistics
 import numpy as np
 
-def get_mode(channel):
+def get_mode(channel,min=0,max=255):
     # numpy return a contiguous flattened array.
     data = channel.ravel()
-    data = np.array([x for x in data if x != 0])
+    data = np.array(data)
+    # clip value
+    data = np.delete(data, np.where(data <= min ))
+    data = np.delete(data, np.where(data >= max ))
     # data = np.array(data)
     if len(data.shape) > 1:
         data = data.ravel()
@@ -49,11 +52,22 @@ def cut_contours(M, w, h, range_w, range_h):
 def brightness(imgBGR, brightnessValue):
     hsv = cv2.cvtColor(imgBGR, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
-    v = np.int16(v)
+    v = np.uint16(v)
     v = np.clip(v + brightnessValue, 0, 255)
     v = np.uint8(v)
     hsv = cv2.merge((h, s, v))
     return cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+
+def brightness_gray(imgGRAY, brightnessValue):
+    bgr = cv2.cvtColor(imgGRAY, cv2.COLOR_GRAY2BGR)
+    hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
+    h, s, v = cv2.split(hsv)
+    v = np.uint16(v)
+    v = np.clip(v + brightnessValue, 0, 255)
+    v = np.uint8(v)
+    hsv = cv2.merge((h, s, v))
+    bgr = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)    
+    return cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)
 
 
 def clip_v(imgBGR, min, max):

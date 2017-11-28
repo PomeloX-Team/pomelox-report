@@ -25,15 +25,18 @@ def add_general_data(request):
     for a in SYMBOL:
         pomelo_index = PomeloIndex.objects.get(symbol=a)
         for d in data[a]:
+            print(d)    
             form = GeneralData()
             if GeneralData.objects.filter(pomelo_index=pomelo_index, date=d[0]):
-                continue
+                GeneralData.objects.filter(pomelo_index=pomelo_index, date=d[0]).delete()
+            #     continue
             form.pomelo_index = pomelo_index
             form.date = d[0]
             form.weight = d[1]
             form.circum = d[2]
             form.temp = d[3]
             form.save()
+            print(form)
             print(d[0])
     return HttpResponse('Complete')
 

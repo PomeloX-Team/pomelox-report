@@ -2,6 +2,8 @@ import cv2
 import statistics
 import numpy as np
 
+def nothing(msg):
+    pass
 def get_mode(channel):
     # numpy return a contiguous flattened array.
     data = channel.ravel()

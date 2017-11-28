@@ -1,4 +1,59 @@
 {% extends 'report_base.html' %} {% load bootstrap %} {% block content %}
+<script>
+  window.onload = function () {
+
+    //Better to construct options first and then pass it as a parameter
+    var options = {
+      exportEnabled: true,
+      animationEnabled: true,
+      title: {
+        text: "Color Difference Chart"
+      },
+    {% if color_diff_list %}
+    data: [
+    {% for color_diff in color_diff_list %}
+        {
+          type: "line", //change it to line, area, bar, pie, etc
+          dataPoints: [
+            {% for x in color_diff %}
+                { y: {{ x }} },
+            {% endfor %}
+          ],
+    },
+    {% endfor %}
+    ]
+  {% endif %}
+  };
+  $("#chartContainer").CanvasJSChart(options);
+  
+
+    
+        //Better to construct options first and then pass it as a parameter
+        var options = {
+          exportEnabled: true,
+          animationEnabled: true,
+          title: {
+            text: "Weight Chart"
+          },
+        {% if weight_list %}
+        data: [
+       
+            {
+              type: "line", //change it to line, area, bar, pie, etc
+              dataPoints: [
+                {% for x in weight_list %}
+                    { y: {{ x }} },
+                {% endfor %}
+              ],
+        },
+  
+        ]
+      {% endif %}
+      };
+      $("#chartContainerWeight").CanvasJSChart(options);
+      
+      }
+</script>
 <div class="container">
   <div class="row">
     <div class="col-xs-1 col-sm-1 col-md-1"></div>
@@ -40,6 +95,19 @@
           </td>
 
         </tr>
+        <tr>
+          <td colspan="3">
+             
+  <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+  <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+  <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+  <br/>
+  <br/>
+  <div id="chartContainerWeight" style="height: 300px; width: 100%;"></div>
+  <br/>
+  <br/>
+          </td>
+        </tr>
       </table>
 
       <br/>
@@ -48,22 +116,25 @@
     <div class="col-xs-1 col-sm-1 col-md-1"></div>
   </div>
   <div class="row">
-    {% if color_data_list %} 
-    {% for color_data in color_data_list %} 
+      <div class="col-xs-1 col-sm-1 col-md-1"></div>
+      
+    {% if color_data_list %} {% for color_data in color_data_list %}
     <div class="col-xs-2 col-sm-2 col-md-2">
-    {% for color in color_data %}
+      {% for color in color_data %}
       <table class='table'>
         <tr>
           <td style="background-color:{{ color_data.0 }};"></td>
           <td style="background-color:{{ color }};"></td>
-          <!-- <td style="background-color:{{ color_last.A1.0 }};">Last: {{color_last.0 }}</td> -->
+          <!-- <td Last: {{color_last.0 }}</td> -->
         </tr>
       </table>
-      {% endfor %} 
+      {% endfor %}
     </div>
-    {% endfor %} 
-    {% endif %}
+    {% endfor %} {% endif %}
   </div>
+  <br/>
+  <br/>
+ 
 </div>
 
 {% endblock %}

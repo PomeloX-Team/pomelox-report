@@ -2,7 +2,7 @@ import numpy as np
 from lib import *
 import constant as CONST
 
-debug = False
+debug = True
 
 
 def print_debug(msg):
@@ -19,6 +19,9 @@ def oil_gland_features(img):
     b_mode = get_mode(b)
     g_mode = get_mode(g)
     r_mode = get_mode(r)
+    print_debug(b_mode)
+    print_debug(g_mode)
+    print_debug(r_mode)
     constt = 20
     # find circle from inrange
     lower_bound = np.array([max(b_mode - constt,0), 0, 0], dtype=np.uint8)

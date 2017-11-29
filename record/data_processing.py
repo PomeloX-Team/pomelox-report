@@ -35,7 +35,7 @@ class DataProcessing():
                 for (i, j) in zip(range(2, 15, 3), range(1, 6)):
                     if not a + str(j) in self.color_data:
                         self.color_data[a + str(j)] = []
-                    if row[i][0] == 'C':
+                    if len(row[i]) > 0 and row[i][0] == 'C' :
                         continue
                     res = row[i:i + 3]
                     self.color_data[a + str(j)].append(res)

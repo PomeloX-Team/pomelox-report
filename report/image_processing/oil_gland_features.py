@@ -3,7 +3,7 @@ from lib import *
 import constant as CONST
 from matplotlib import pyplot as plt
 
-debug = False
+debug = True
 
 
 def print_debug(msg):

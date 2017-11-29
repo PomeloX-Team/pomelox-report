@@ -48,6 +48,7 @@ def get_color(request):
         color_last_list = []
         color_diff_list = []
         weight_list = []
+        circum_list = []
         for no in range(1, 5):
             sub_symbol = symbol + str(no)
             pomelo_sub_index = PomeloSubIndex.objects.get(
@@ -59,11 +60,12 @@ def get_color(request):
             color_diff = []
             color_last = []
 
-            for i in range(1, 25):
+            for i in range(1, 29):
                 date = str(i) + '/11/2560'
                 general_data = GeneralData.objects.get(date=date,pomelo_index=pomelo_index)
                 if no == 1:
                     weight_list.append(general_data.weight)
+                    circum_list.append(general_data.circum)
                 information = Information.objects.get(general_data=general_data, pomelo_sub_index=pomelo_sub_index)
                 l = information.l
                 a = information.a
@@ -73,14 +75,16 @@ def get_color(request):
                 # current = [int(l),int(b)]
                 r,g,b = lab2(l,a,b)
                 h,s,v = lab2(l,a,b,'hsv')
-                current = [int(h)]
+                # current = [int(h)]
                 # print(r,g,b)    
                 # current = [int(r),int(g),int(b)]
-                # if i > 1:
-                if i > 0:
-                    # diff = difference(before,current)
-                    # color_diff.append(diff)
-                    color_diff.append(int(h))
+                # current = [int(h),int(s),int(v)]
+                current = [int(s)]
+                if i > 1:
+                # if i > 0:
+                    diff = difference(before,current)
+                    color_diff.append(diff)
+                    # color_diff.append(int(h))
                     
                 before = current            
                 r = str(r)
@@ -99,10 +103,11 @@ def get_color(request):
             color_data_list.append(color_data)
             color_last_list.append(color_last)
             color_diff_list.append(color_diff)
-        print(color_diff_list)
-        print(weight_list)
+        # print(color_diff_list)
+        # print(weight_list)
         context = { 'color_data_list':color_data_list,'color_last_list':color_last_list,
-                    'color_diff_list':color_diff_list, 'weight_list':weight_list}
+                    'color_diff_list':color_diff_list, 'weight_list':weight_list,
+                    'circum_list':circum_list,'symbol':symbol}
         return render(request,'color.html',context=context)
     else:
         return render(request, 'color.html', context=None)

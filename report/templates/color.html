@@ -1,4 +1,6 @@
-{% extends 'report_base.html' %} {% load bootstrap %} {% block content %}
+{% extends 'report_base.html' %} 
+{% load bootstrap %}
+ {% block content %}
 <script>
   var count = 1;
   window.onload = function () {
@@ -16,10 +18,11 @@
 		title: "Hue value",
 		includeZero: false,
 		scaleBreaks: {
-			customBreaks: [{
-				startValue: 0,
-				endValue: 20
-			}]
+      autoCalculate: true
+			// customBreaks: [{
+			// 	startValue: 5,
+			// 	endValue: 10
+			// }]
 		}
 	},
       data: [
@@ -72,6 +75,37 @@
       };
   $("#chartContainerWeight").CanvasJSChart(options);
       
+
+  //Better to construct options first and then pass it as a parameter
+  var options = {
+    exportEnabled: true,
+    animationEnabled: true,
+    title: {
+      text: "Circumference Chart"
+    },
+    axisY: {
+		title: "circumference(g)",
+		includeZero: false,
+		scaleBreaks: {
+			autoCalculate: true
+		}
+	},
+        {% if circum_list %}
+  data: [
+
+    {
+      type: "spline", //change it to line, area, bar, pie, etc
+      dataPoints: [
+        {% for x in circum_list %}
+                    { y: {{ x }} },
+    {% endfor %}
+  ],
+        },
+  
+        ]
+  {% endif %}
+      };
+  $("#chartContainerCircum").CanvasJSChart(options);
       }
 </script>
 <div class="container">
@@ -85,8 +119,9 @@
           <form method="post">
             {% csrf_token %}
 
-            <td colspan="3">
-              <select id='symbol' name='symbol' class='form-control'>
+            <td colspan="4">
+              <select id='symbol' name='symbol' class='form-control'  onchange="this.form.submit()">
+                <option value="" selected disabled>Please select a symbol of pomelo.</option>
                 <option value="A">A</option>
                 <option value="B">B</option>
                 <option value="C">C</option>
@@ -96,9 +131,9 @@
               </select>
 
             </td>
-            <td align='center'>
-              <button type="submit" class="btn btn-primary btn-block" onchange="this.form.submit()">Display</button>
-            </td>
+            <!-- <td align='center'> -->
+              <!-- <button type="submit" class="btn btn-primary btn-block">Display</button> -->
+            <!-- </td> -->
           </form>
         </tr>
         <tr>
@@ -144,12 +179,12 @@
           </td>
         </tr>
         <tr>
-          <!-- <td colspan="2">
-            <div id="chartContainer5" style="height: 250px; width: 100%;"></div>
+          <td colspan="2">
+            <div id="chartContainerCircum" style="height: 250px; width: 100%;"></div>
             <br/>
             <br/>
-          </td> -->
-          <td colspan="4">
+          </td>
+          <td colspan="2">
             <div id="chartContainerWeight" style="height: 250px; width: 100%;"></div>
             <br/>
             <br/>

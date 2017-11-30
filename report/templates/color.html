@@ -3,58 +3,51 @@
   var count = 1;
   window.onload = function () {
     {% if color_diff_list %}
-    {% for color_diff in color_diff_list %}
-
-    //Better to construct options first and then pass it as a parameter
-    var options = {
-      exportEnabled: true,
-      animationEnabled: true,
-      title: {
-        text: "Color Difference Chart"+count.toString()
-      },
-    data: [
-        {
-          type: "line", //change it to line, area, bar, pie, etc
-          dataPoints: [
-            {% for x in color_diff %}
-                { y: {{ x }} },
-            {% endfor %}
-          ],
-    },
-    ]
-  };
-  $("#chartContainer".concat(count.toString())).CanvasJSChart(options);
-  count = count + 1
-  {% endfor %}
-  {% endif %}
-  
-
-    
-        //Better to construct options first and then pass it as a parameter
+      {% for color_diff in color_diff_list %}
         var options = {
           exportEnabled: true,
           animationEnabled: true,
           title: {
-            text: "Weight Chart"
+            text: "Color Difference Chart"+count.toString()
           },
-        {% if weight_list %}
-        data: [
-       
+          data: [
             {
-              type: "line", //change it to line, area, bar, pie, etc
-              dataPoints: [
-                {% for x in weight_list %}
-                    { y: {{ x }} },
-                {% endfor %}
-              ],
+                type: "line", //change it to line, area, bar, pie, etc
+                dataPoints: [
+                  {% for x in color_diff %}
+                      { y: {{ x }} },
+                  {% endfor %}
+                ],
+            },
+          ]
+        };
+    $("#chartContainer".concat(count.toString())).CanvasJSChart(options);
+    count = count + 1
+    {% endfor %}
+    {% endif %}
+    
+    var options = {
+      exportEnabled: true,
+      animationEnabled: true,
+      title: {
+        text: "Weight Chart"
+      },
+      {% if weight_list %}
+      data: [
+        {
+          type: "line", //change it to line, area, bar, pie, etc
+          dataPoints: [
+            {% for x in weight_list %}
+                { y: {{ x }} },
+            {% endfor %}
+          ],
         },
-  
-        ]
+    
+      ]
       {% endif %}
-      };
-      $("#chartContainerWeight").CanvasJSChart(options);
-      
-      }
+    };
+    $("#chartContainerWeight").CanvasJSChart(options);
+  }
 </script>
 <div class="container">
   <div class="row">
@@ -139,7 +132,6 @@
         <tr>
           <td style="background-color:{{ color_data.0 }};"></td>
           <td style="background-color:{{ color }};"></td>
-          <!-- <td Last: {{color_last.0 }}</td> -->
         </tr>
       </table>
       {% endfor %}
